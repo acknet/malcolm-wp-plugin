@@ -10,7 +10,7 @@
                         </label>
                     </th>
                     <td>
-                        <input id="malcolm_url" name="malcolm_url" placeholder="e.g. https://support.example.com" type="text" value="<?php echo form_val(array_get($options, 'url')) ?>" class="regular-text">
+                        <input id="malcolm_url" name="malcolm_url" placeholder="e.g. https://my-instance.malcolm.support" type="text" value="<?php echo form_val(array_get($options, 'url')) ?>" class="regular-text">
                         <p class="description">The full URL of your instance landing page.</p>
                     </td>
                 </tr>

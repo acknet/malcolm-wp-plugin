@@ -25,7 +25,7 @@ function malcolm_activate()
     add_option('malcolm', [
         'border' => 0,
         'footer' => true,
-        'header' => false,
+        'header' => true,
         'height' => '600px',
         'promos' => false,
         'url' => '',
@@ -52,17 +52,25 @@ function malcolm_admin_menu()
  */
 function malcolm_build_embed_url($path = '', array $atts = [])
 {
+    $atts = malcolm_normalise_atts($atts);
+
     $query = [];
 
-    if (($header = array_get($atts, 'header', false))) {
+    if (($header = array_get($atts, 'header'))) {
         $query['header'] = 'true';
+    } else {
+        $query['header'] = 'false';
     }
 
-    if (($promos = array_get($atts, 'promos', false))) {
+    if (($promos = array_get($atts, 'promos'))) {
         $query['promos'] = 'true';
+    } else {
+        $query['promos'] = 'false';
     }
 
-    if (($footer = array_get($atts, 'footer', true))) {
+    if (($footer = array_get($atts, 'footer'))) {
+        $query['footer'] = 'true';
+    } else {
         $query['footer'] = 'false';
     }
 
@@ -93,23 +101,32 @@ function malcolm_deactivate()
  */
 function malcolm_normalise_atts($atts = [])
 {
-    // Make all attribute keys lowercase
     $normalised = array_change_key_case((array) $atts, CASE_LOWER);
 
-    // Get the admin defined options
+    foreach ($normalised as $key => $value) {
+
+        if ($value === 'false') {
+            $value = false;
+        } elseif ($value === 'true') {
+            $value = true;
+        } elseif (is_numeric($value) && (int) $value == $value) {
+            $value = (int) $value;
+        }
+
+        array_set($normalised, $key, $value);
+    }
+
     $options = get_option('malcolm');
 
-    // Default values
     $default = [
         'border' => array_get($options, 'border', 0),
         'footer' => array_get($options, 'footer', true),
-        'header' => array_get($options, 'header', false),
+        'header' => array_get($options, 'header', true),
         'height' => array_get($options, 'height', '600px'),
         'promos' => array_get($options, 'header', false),
         'width' => array_get($options, 'width', '100%')
     ];
 
-    // Override default attributes with user attributes
     return shortcode_atts($default, $normalised);
 }
 
@@ -142,9 +159,9 @@ function malcolm_output_admin_options()
 function malcolm_output_faq($atts = [])
 {
     if (($slug = array_shift($atts))) {
-        $src = malcolm_build_embed_url('faqs/' . $slug);
+        $src = malcolm_build_embed_url('faqs/' . $slug, $atts);
     } else {
-        $src = malcolm_build_embed_url('faqs');
+        $src = malcolm_build_embed_url('faqs', $atts);
     }
 
     extract(malcolm_normalise_atts($atts));
@@ -162,7 +179,7 @@ function malcolm_output_faq($atts = [])
  */
 function malcolm_output_faqs($atts = [])
 {
-    $src = malcolm_build_embed_url('faqs');
+    $src = malcolm_build_embed_url('faqs', $atts);
 
     extract(malcolm_normalise_atts($atts));
 
@@ -197,9 +214,9 @@ function malcolm_output_instance($atts = [])
 function malcolm_output_url($atts = [])
 {
     if (($path = array_shift($atts))) {
-        $src = malcolm_build_embed_url($path);
+        $src = malcolm_build_embed_url($path, $atts);
     } else {
-        $src = malcolm_build_embed_url();
+        $src = malcolm_build_embed_url('', $atts);
     }
 
     extract(malcolm_normalise_atts($atts));
@@ -218,9 +235,9 @@ function malcolm_output_url($atts = [])
 function malcolm_output_workflow($atts = [])
 {
     if (($slug = array_shift($atts))) {
-        $src = malcolm_build_embed_url('workflows/' . $slug);
+        $src = malcolm_build_embed_url('workflows/' . $slug, $atts);
     } else {
-        $src = malcolm_build_embed_url('workflows');
+        $src = malcolm_build_embed_url('workflows', $atts);
     }
 
     extract(malcolm_normalise_atts($atts));
@@ -238,7 +255,7 @@ function malcolm_output_workflow($atts = [])
  */
 function malcolm_output_workflows($atts = [])
 {
-    $src = malcolm_build_embed_url('workflows');
+    $src = malcolm_build_embed_url('workflows', $atts);
 
     extract(malcolm_normalise_atts($atts));
 

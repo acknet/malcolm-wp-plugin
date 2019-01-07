@@ -21,6 +21,25 @@ if (! function_exists('array_get')) {
     }
 }
 
+if (! function_exists('array_set')) {
+    /**
+     * Set an array item to a given value.
+     *
+     * @param array $array
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    function array_set(array &$array, $key, $value)
+    {
+        if (is_null($key)) {
+            $array[] = $value;
+        } else {
+            $array[$key] = $value;
+        }
+    }
+}
+
 if (!function_exists('dd')) {
     /**
      * Dump out variables in a human readable format.
