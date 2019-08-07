@@ -54,24 +54,26 @@ function malcolm_build_embed_url($path = '', array $atts = [])
 {
     $atts = malcolm_normalise_atts($atts);
 
-    $query = [];
+    $query = [
+        'blended' => 'yes'
+    ];
 
     if (($header = array_get($atts, 'header'))) {
-        $query['header'] = 'true';
+        $query['header'] = 'yes';
     } else {
-        $query['header'] = 'false';
+        $query['header'] = 'no';
     }
 
     if (($promos = array_get($atts, 'promos'))) {
-        $query['promos'] = 'true';
+        $query['promos'] = 'yes';
     } else {
-        $query['promos'] = 'false';
+        $query['promos'] = 'no';
     }
 
     if (($footer = array_get($atts, 'footer'))) {
-        $query['footer'] = 'true';
+        $query['footer'] = 'yes';
     } else {
-        $query['footer'] = 'false';
+        $query['footer'] = 'no';
     }
 
     $url = array_get(get_option('malcolm'), 'url') . '/embed' . ( $path ? '/' . ltrim($path, '/') : '' );
