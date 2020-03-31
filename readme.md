@@ -46,18 +46,6 @@ command to pull down the contents of this repository.
 
 To embed a Malcolm! page into your Wordpress site use the following short codes:
 
-### `[malcolm_faqs]`
-
-Embed your Malcolm! FAQs landing page.
-
-### `[malcolm_instance]`
-
-Embed your Malcolm! instance landing page.
-
-### `[malcolm_workflows]`
-
-Embed your Malcolm! instance landing page.
-
 ### `[malcolm_faq "how-to-make-a-claim"]`
 
 Embed a Malcolm! FAQ passing the short name of the FAQ as an argument.
@@ -66,6 +54,6 @@ Embed a Malcolm! FAQ passing the short name of the FAQ as an argument.
 
 Embed a Malcolm! workflow passing the short name of the workflow as an argument.
 
-### `[malcolm_url "/path/to/page"]`
+### `[malcolm_popular]`
 
-Embed any Malcolm! page on your instance URL.
+Embed your most popular Malcolm! FAQs and Workflows listing.
