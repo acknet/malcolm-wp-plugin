@@ -39,21 +39,23 @@ command to pull down the contents of this repository.
 
 * Open the Wordpress admin.
 * Navigate to `Plugins` and activate the plugin.
-* Navigate to `Settings > Malcolm!` and fill in your instance URL.
-* If desired alter the default styling options.
+* Navigate to `Settings > Malcolm!` and fill in your Instance ID.
 
 ## Usage
 
-To embed a Malcolm! page into your Wordpress site use the following short codes:
+Use MyMalcolm to configure your embeds and if required restrict them to the 
+URL of your Wordpress site.
 
-### `[malcolm_faq "how-to-make-a-claim"]`
+Widget Embeds will automatically show according 
+to the rules set in MyMalcolm.
 
-Embed a Malcolm! FAQ passing the short name of the FAQ as an argument.
+Inline and Popup Embeds will need an additional Wordpress short code added 
+where you would like them to be displayed.
 
-### `[malcolm_workflow "make-a-claim"]`
+### `[malcolm_inline "xxxxxxxxxx"]`
 
-Embed a Malcolm! workflow passing the short name of the workflow as an argument.
+Create a container for an Inline Embed with Embed ID `xxxxxxxxxx`.
 
-### `[malcolm_popular]`
+### `[malcolm_popup "xxxxxxxxxx"]`
 
-Embed your most popular Malcolm! FAQs and Workflows listing.
+Create a container for a Popup Embed with Embed ID `xxxxxxxxxx`.
