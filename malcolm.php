@@ -23,8 +23,7 @@ register_deactivation_hook(__FILE__, 'malcolm_deactivate');
 function malcolm_activate()
 {
     add_option('malcolm', [
-        'id' => '',
-        'uri' => ''
+        'id' => ''
     ]);
 }
 
@@ -79,70 +78,33 @@ function malcolm_output_admin_options()
 }
 
 /**
- * Ouput the HTML for embed.
+ * Ouput the HTML for inline embeds.
  *
  * @param mixed $atts
  * @return void
  */
-function malcolm_output_faq($atts = [])
+function malcolm_output_inline($atts = [])
 {
-    $options = [
-        'blended' => false,
-        'content' => 'faq',
-        'faq' => array_shift($atts),
-        'height' => '700px',
-        'navbar' => false,
-        'searchBar' => false,
-        'width' => '100%'
-    ];
-
-    ob_start();
-    include(plugin_dir_path(__FILE__) . 'malcolm-embed.php');
-    return ob_get_clean();
+    if (($embedId = array_shift($atts))) {
+        ob_start();
+        include(plugin_dir_path(__FILE__) . 'malcolm-inline.php');
+        return ob_get_clean();
+    }
 }
 
 /**
- * Ouput the HTML for embed.
+ * Ouput the HTML for popup embeds.
  *
  * @param mixed $atts
  * @return void
  */
-function malcolm_output_popular($atts = [])
+function malcolm_output_popup($atts = [])
 {
-    $options = [
-        'blended' => false,
-        'content' => 'filtered',
-        'filter' => 'popular',
-        'height' => '700px',
-        'width' => '100%'
-    ];
-
-    ob_start();
-    include(plugin_dir_path(__FILE__) . 'malcolm-embed.php');
-    return ob_get_clean();
-}
-
-/**
- * Ouput the HTML for embed.
- *
- * @param mixed $atts
- * @return void
- */
-function malcolm_output_workflow($atts = [])
-{
-    $options = [
-        'blended' => false,
-        'content' => 'workflow',
-        'height' => '700px',
-        'navbar' => false,
-        'searchBar' => false,
-        'width' => '100%',
-        'workflow' => array_shift($atts)
-    ];
-
-    ob_start();
-    include(plugin_dir_path(__FILE__) . 'malcolm-embed.php');
-    return ob_get_clean();
+    if (($embedId = array_shift($atts))) {
+        ob_start();
+        include(plugin_dir_path(__FILE__) . 'malcolm-popup.php');
+        return ob_get_clean();
+    }
 }
 
 /**
@@ -154,15 +116,26 @@ function malcolm_wp_loaded()
 {
     if (array_key_exists('option_page', $_POST) && $_POST['option_page'] === 'malcolm') {
         update_option('malcolm', [
-            'id' => array_get($_POST, 'malcolm_id'),
-            'uri' => rtrim(array_get($_POST, 'malcolm_uri'), '/')
+            'id' => array_get($_POST, 'malcolm_id')
         ]);
+    }
+}
+
+/**
+ * Add the script tag to the WP footer.
+ *
+ * @return void
+ */
+function malcolm_wp_footer()
+{
+    if (($id = malcolm_get_option_value('id'))) {
+        echo '<script src="https://apis.malcolm.app/mapi.js?id=' . form_val($id) . '" async defer></script>';
     }
 }
 
 add_action('admin_menu', 'malcolm_admin_menu');
 add_action('wp_loaded', 'malcolm_wp_loaded');
+add_action('wp_footer', 'malcolm_wp_footer');
 
-add_shortcode('malcolm_faq', 'malcolm_output_faq');
-add_shortcode('malcolm_popular', 'malcolm_output_popular');
-add_shortcode('malcolm_workflow', 'malcolm_output_workflow');
+add_shortcode('malcolm_inline', 'malcolm_output_inline');
+add_shortcode('malcolm_popup', 'malcolm_output_popup');

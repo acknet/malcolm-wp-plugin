@@ -15,18 +15,6 @@
                         <p class="description">Enter your Instance ID - e.g. if the URL when viewing your Dashboard is "https://my.malcolm.app/instances/xxxxxxxxxx/dashboard" then your Instance ID is "xxxxxxxxxx".</p>
                     </td>
                 </tr>
-
-                <tr>
-                    <th scope="row">
-                        <label for="malcolm_uri">
-                            Support Hub URL
-                        </label>
-                    </th>
-                    <td>
-                        <input id="malcolm_uri" name="malcolm_uri" placeholder="e.g. https://my-instance.malcolm.app" type="text" value="<?php echo form_val(array_get($options, 'uri')) ?>" class="regular-text">
-                        <p class="description">Enter your Instance Support Hub URL, without trailing slashes.</p>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
